@@ -104,8 +104,9 @@ Actual failure occurred at 1051–1056 h — meaning the 1050 h prediction was a
 │   ├── figure_2.png
 │   └── figure_3.png
 ├── Condition_monitoring.mlx
+├── SUMMARY.md
 ├── README.md
-├── TECHNICAL_DOCUMENTATION
+└── TECHNICAL_DOCUMENTATION.md
 ```
 
 ## 5. Requirements & How to Run
