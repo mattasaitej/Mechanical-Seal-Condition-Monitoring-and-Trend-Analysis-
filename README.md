@@ -98,12 +98,12 @@ Actual failure occurred at 1051–1056 h — meaning the 1050 h prediction was a
 ## 4. Repository Structure
 
 ```
-├── mechanical_seal_monitoring.m
 ├── untitled3_media/
 │   ├── figure_0.png
 │   ├── figure_1.png
 │   ├── figure_2.png
 │   └── figure_3.png
+├── Condition_monitoring.mlx
 └── README.md
 ```
 
