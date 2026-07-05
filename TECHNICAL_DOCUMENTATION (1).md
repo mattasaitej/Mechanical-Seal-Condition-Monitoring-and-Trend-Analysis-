@@ -447,13 +447,30 @@ end
 
 ### Temperature Model
 
+The signal is built from four separate equations, one per operating phase.
+ 
+**Phase 1 — Healthy ($t \le t_h$):**
+ 
 $$
-T(t) = \begin{cases}
-T_0 + \varepsilon(t) & t \le t_h \\[4pt]
-T_0 + k_2(t - t_h) + 1.0\,\varepsilon(t) & t_h < t \le t_d \\[4pt]
-T_{d} + k_3(t - t_d) + 1.5\,\varepsilon(t) & t_d < t \le t_a \\[4pt]
-T_{a} + \Delta T_{step} + k_4(t - t_a) + 2.0\,\varepsilon(t) & t > t_a
-\end{cases}
+T(t) = T_0 + \varepsilon(t)
+$$
+ 
+**Phase 2 — Gradual degradation ($t_h < t \le t_d$):**
+ 
+$$
+T(t) = T_0 + k_2(t - t_h) + 1.0 \, \varepsilon(t)
+$$
+ 
+**Phase 3 — Accelerated degradation ($t_d < t \le t_a$):**
+ 
+$$
+T(t) = T_d + k_3(t - t_d) + 1.5 \, \varepsilon(t)
+$$
+ 
+**Phase 4 — Post-anomaly ($t > t_a$):**
+ 
+$$
+T(t) = T_a + \Delta T_{step} + k_4(t - t_a) + 2.0 \, \varepsilon(t)
 $$
 
 Where $T_0 = 50\,°C$ is the baseline, $t_h, t_d, t_a$ are the healthy/degradation/anomaly boundary times (600, 900, 1050 h), $k_2, k_3, k_4$ are the phase drift rates (0.018, 0.045, 0.06 °C/h), $\Delta T_{step} = 14\,°C$ is the anomaly step, $T_d$ and $T_a$ are the carried-forward values from the end of the previous phase, and $\varepsilon(t) \sim \mathcal{N}(0, 0.8^2)$ is Gaussian sensor noise.
@@ -505,17 +522,18 @@ $$
 Fit via `polyfit(t, y, 3)` on measured data, then evaluated (`polyval`) beyond the measured range for extrapolation.
 
 ### RUL Root-Finding Equation
-
-Given a fitted cubic $p(t)$ and critical threshold $C$, the predicted failure time $t_f$ is the smallest real, future root of:
-
+Given a fitted cubic $p(t)$ and critical threshold $C$, MATLAB solves for the roots of the shifted polynomial:
+ 
 $$
-p(t) - C = 0, \qquad t_f = \min\{\,t > t_{pred} : p(t) = C,\ \operatorname{Im}(t)\approx 0\,\}
+p(t) - C = 0
 $$
-
+ 
+Each root $t$ is checked against two conditions: it must be real (negligible imaginary part), and it must lie in the future relative to the prediction time $t_{pred}$ (i.e. $t > t_{pred}$). The predicted failure time $t_f$ is the smallest root that satisfies both conditions. The Remaining Useful Life is then:
+ 
 $$
-\text{RUL} = t_f - t_{pred}
+RUL = t_f - t_{pred}
 $$
-
+ 
 ---
 
 # 4. Phase Logic
