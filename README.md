@@ -112,7 +112,7 @@ Actual failure occurred at 1051–1056 h — meaning the 1050 h prediction was a
 ## 5. Requirements & How to Run
 
 - MATLAB R2024b , Statistics and Machine Learning Toolbox
-- Open `mechanical_seal_monitoring.m` and run it. Four figures will appear, and alarm/RUL reports print to the Command Window.
+- Open `Condition_Monitoring.mlx` and run it. Four figures will appear, and alarm/RUL reports print to the Command Window.
 
 ## 6. Disclaimer
 
